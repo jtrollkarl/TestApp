@@ -1,11 +1,10 @@
 package com.example.testapp
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.testapp.api.WeatherApi
 import com.squareup.moshi.Moshi
 import dagger.Binds
-import dagger.MapKey
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -14,10 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 
 @Module
 abstract class ViewModelModule {
@@ -27,8 +23,16 @@ abstract class ViewModelModule {
 
 }
 
+@Module(includes = [NetworkModule::class])
+class ApiModule {
+
+    @Provides
+    @Singleton
+    fun provideWeatherApi(retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)
+}
+
 @Module(includes = [CacheModule::class])
-class RetrofitModule {
+class NetworkModule {
 
     @Provides
     @Singleton

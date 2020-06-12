@@ -5,7 +5,7 @@ import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [RetrofitModule::class])
+@Component(modules = [NetworkModule::class])
 interface AppComponent {
 
     fun createClient(): OkHttpClient
