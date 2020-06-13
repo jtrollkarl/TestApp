@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class SearchResult(
     @Json(name = "_embedded")
-    val embedded: Embedded,
+    val embedded: Embedded? = null,
     @Json(name = "_links")
     val links: LinksX,
     @Json(name = "totalResults")

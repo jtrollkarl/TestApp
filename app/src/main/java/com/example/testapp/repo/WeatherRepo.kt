@@ -15,11 +15,13 @@ class WeatherRepo @Inject constructor(private val api: WeatherApi) {
 
     val weatherResult: LiveData<List<Location>> = _weatherResult
 
-    suspend fun getWeatherDataLocation(location: String){
+    suspend fun getWeatherDataLocation(location: String) {
         try {
-            val result: SearchResult = api.searchWeather(location = location, language = "en")
-            _weatherResult.postValue(result.embedded.location)
-        } catch (e: Throwable){
+            val result: SearchResult? = api.searchWeather(location = location, language = "en")
+            result?.embedded?.location?.let {
+                _weatherResult.postValue(it)
+            } ?: Timber.e("Search results were null")
+        } catch (e: Throwable) {
             Timber.e(e, "An error occurred")
         }
 

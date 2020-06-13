@@ -10,5 +10,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Embedded(
     @Json(name = "location")
-    val location: List<Location>
+    val location: List<Location>? = null
 ): Parcelable

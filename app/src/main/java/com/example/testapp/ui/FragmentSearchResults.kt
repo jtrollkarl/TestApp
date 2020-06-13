@@ -15,14 +15,9 @@ import com.example.testapp.data.Location
 import com.example.testapp.showToast
 import com.example.testapp.viewmodel.WeatherViewModel
 import kotlinx.android.synthetic.main.fragment_search_results.*
-import timber.log.Timber
 import javax.inject.Inject
 
-class FragmentSearch : Fragment() {
-
-    companion object {
-        const val TAG = "FragmentSearchResultsTag"
-    }
+class FragmentSearchResults : Fragment() {
 
     private lateinit var resultAdapter: AdapterSearchResult
     private lateinit var viewModel: WeatherViewModel
@@ -30,44 +25,37 @@ class FragmentSearch : Fragment() {
     @Inject
     lateinit var vmFactory: ViewModelFactory
 
+    companion object {
+        private const val RESULTS_KEY = "results_key"
+        const val TAG = "FragmentSearchResultsTag"
+
+        fun newInstance(results: List<Location>): FragmentSearchResults =
+            FragmentSearchResults().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(RESULTS_KEY, ArrayList(results))
+                }
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_search_results, container, false)
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        //super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_search_fragment, menu)
-
-        val searchItem = menu.findItem(R.id.search)
-        val searchView = searchItem.actionView as SearchView
-
-        searchView.queryHint = getString(R.string.search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.searchWeather(query)
-                searchItem.collapseActionView()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean = true
-        })
-    }
+    ): View? = inflater.inflate(R.layout.fragment_search_results, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.getApp(requireActivity()).component.inject(this)
-        viewModel = ViewModelProvider(this, vmFactory).get(WeatherViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), vmFactory).get(WeatherViewModel::class.java)
+
+        val results: List<Location> = arguments?.getParcelableArrayList(RESULTS_KEY) ?: emptyList()
 
         recycler_search_results.run {
-            resultAdapter = AdapterSearchResult(emptyList()) { TODO("impl onclick logic") }
+            resultAdapter = AdapterSearchResult(results) { showToast(it.name) }
             val lm = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             val decoration = DividerItemDecoration(requireContext(), lm.orientation)
 
@@ -76,10 +64,6 @@ class FragmentSearch : Fragment() {
             this.layoutManager = lm
         }
 
-        viewModel.liveDataSearchResult.observe(viewLifecycleOwner, Observer<List<Location>> {
-            resultAdapter.locationList = it
-            Timber.d(it[0].name)
-        })
     }
 
 

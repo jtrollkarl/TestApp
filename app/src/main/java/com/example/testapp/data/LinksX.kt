@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class LinksX(
     @Json(name = "location")
-    val location: List<LocationX>,
+    val location: List<LocationX>? = null,
     @Json(name = "page")
     val page: Page,
     @Json(name = "search")

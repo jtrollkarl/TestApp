@@ -10,25 +10,26 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Links(
     @Json(name = "airqualityforecast")
-    val airqualityforecast: Airqualityforecast,
+    val airqualityforecast: Airqualityforecast? = null,
     @Json(name = "bathingtemperatures")
-    val bathingtemperatures: Bathingtemperatures,
+    val bathingtemperatures: Bathingtemperatures? = null,
     @Json(name = "celestialevents")
-    val celestialevents: Celestialevents,
+    val celestialevents: Celestialevents? = null,
     @Json(name = "extremeforecasts")
-    val extremeforecasts: Extremeforecasts,
+    val extremeforecasts: Extremeforecasts? = null,
     @Json(name = "forecast")
     val forecast: Forecast,
     @Json(name = "mapfeature")
     val mapfeature: Mapfeature,
     @Json(name = "notifications")
-    val notifications: Notifications,
+    val notifications: Notifications? = null,
     @Json(name = "now")
-    val now: Now,
+    val now: Now? = null,
+    @Transient
     @Json(name = "observations")
-    val observations: List<Observation>,
+    val observations: List<Observation> = emptyList(),
     @Json(name = "pollen")
-    val pollen: Pollen,
+    val pollen: Pollen? = null,
     @Json(name = "self")
-    val self: Self
+    val self: Self? = null
 ): Parcelable

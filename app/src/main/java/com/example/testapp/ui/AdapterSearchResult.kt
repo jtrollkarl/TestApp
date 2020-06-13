@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.list_iteam_search_result.view.*
 
 class AdapterSearchResult(
     var locationList: List<Location> = emptyList(),
-    val func: () -> Unit
+    val func: (Location) -> Unit
 ) : RecyclerView.Adapter<AdapterSearchResult.ViewHolderSearchResult>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderSearchResult =
@@ -21,13 +21,12 @@ class AdapterSearchResult(
 
     override fun getItemCount(): Int = locationList.size
 
-    override fun onBindViewHolder(holder: ViewHolderSearchResult, position: Int) {
-        holder.bind(locationList[position])
-    }
+    override fun onBindViewHolder(holder: ViewHolderSearchResult, position: Int) = holder.bind(locationList[position])
 
-    class ViewHolderSearchResult(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolderSearchResult(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(location: Location) {
             view.tv_city.text = location.name
+            view.setOnClickListener { func(location) }
         }
     }
 

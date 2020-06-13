@@ -24,9 +24,9 @@ data class Location(
     @Json(name = "position")
     val position: Position,
     @Json(name = "region")
-    val region: Region,
+    val region: Region? = null,
     @Json(name = "subregion")
-    val subregion: Subregion,
+    val subregion: Subregion? = null,
     @Json(name = "timeZone")
     val timeZone: String,
     @Json(name = "urlPath")
