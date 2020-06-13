@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.R
 import com.example.testapp.data.Location
+import kotlinx.android.synthetic.main.list_iteam_search_result.view.*
 
 class AdapterSearchResult(
     var locationList: List<Location> = emptyList(),
@@ -24,9 +25,9 @@ class AdapterSearchResult(
         holder.bind(locationList[position])
     }
 
-    class ViewHolderSearchResult(v: View) : RecyclerView.ViewHolder(v) {
+    class ViewHolderSearchResult(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(location: Location) {
-            TODO()
+            view.tv_city.text = location.name
         }
     }
 

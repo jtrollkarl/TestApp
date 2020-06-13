@@ -6,11 +6,11 @@ import retrofit2.http.Query
 
 interface WeatherApi {
 
-    @GET("/locations/Search")
-    suspend fun searchWeather(@Query("q") location: String,
-                              @Query("lat") latitude: Double,
-                              @Query("lon") longitude: Double,
-                              @Query("accuracy") accuracy: Double,
+    @GET("locations/Search")
+    suspend fun searchWeather(@Query("q") location: String? = null,
+                              @Query("lat") latitude: Double? = null,
+                              @Query("lon") longitude: Double? = null,
+                              @Query("accuracy") accuracy: Double? = null,
                               @Query("language") language: String): SearchResult
 
 

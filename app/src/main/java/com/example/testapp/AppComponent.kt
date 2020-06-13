@@ -1,13 +1,13 @@
 package com.example.testapp
 
+import com.example.testapp.ui.FragmentSearch
 import dagger.Component
-import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class])
+@Component(modules = [ApiModule::class, ViewModelModule::class])
 interface AppComponent {
 
-    fun createClient(): OkHttpClient
+    fun inject(fragment: FragmentSearch)
 
 }

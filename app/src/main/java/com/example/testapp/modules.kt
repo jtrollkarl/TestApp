@@ -1,12 +1,15 @@
 package com.example.testapp
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.testapp.api.WeatherApi
+import com.example.testapp.viewmodel.WeatherViewModel
 import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,6 +22,12 @@ import javax.inject.Singleton
 abstract class ViewModelModule {
 
     @Binds
+    @IntoMap
+    @ViewModelKey(WeatherViewModel::class)
+    abstract fun bindWeatherVM(vm: WeatherViewModel): ViewModel
+
+    @Binds
+    @Singleton
     abstract fun bindVMFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
 }
@@ -39,7 +48,7 @@ class NetworkModule {
     fun provideRetrofit(moshi: MoshiConverterFactory, okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://www.yr.no/api/v0")
+            .baseUrl("https://www.yr.no/api/v0/")
             .addConverterFactory(moshi)
             .build()
 
@@ -73,7 +82,7 @@ class CacheModule {
 
     @Provides
     @Singleton
-    fun provideCache(context: Context): Cache = Cache(context.cacheDir, 5 * 5 * 1024)
+    fun provideCache(context: Context): Cache = Cache(context.cacheDir, 5 * 5 * 1024) //5 MB
 }
 
 @Module
