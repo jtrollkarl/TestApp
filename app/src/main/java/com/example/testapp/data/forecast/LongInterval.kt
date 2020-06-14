@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +41,7 @@ data class LongInterval(
 ) : Parcelable {
 
     @SuppressLint("SimpleDateFormat")
+    @IgnoredOnParcel
     val format = SimpleDateFormat("HH:mm:ss")
 
     val startDate: String

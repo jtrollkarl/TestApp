@@ -80,7 +80,7 @@ class FragmentWeather : Fragment() {
             it.getCurrentWeatherIcon(requireActivity())?.let { drawable ->
                 iv_icon.setImageDrawable(drawable)
             }
-            val basicWeather: List<ForecastResult.BasicWeather> = it.getWeatherDaysAfter(3)
+            val basicWeather: List<ForecastResult.BasicWeather> = it.getWeatherDaysAfter()
 
             recycler_forecast.run {
                 weatherAdapter = AdapterUpcomingWeather(basicWeather)

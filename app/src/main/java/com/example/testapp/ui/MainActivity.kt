@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity() {
             ?.doTransaction { replace(R.id.container, FragmentWeather(), FragmentWeather.TAG) }
     }
 
+    //TODO should this be here?
     private fun showForecastResults(result: ForecastResult){
         supportFragmentManager.popBackStack()
-        //val fragmentWeather: FragmentWeather = supportFragmentManager.findFragmentByTag(FragmentWeather.TAG) as FragmentWeather
     }
 
     private fun showResultsFragment(list: List<Location>) {

@@ -9,6 +9,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import timber.log.Timber
+import java.lang.IndexOutOfBoundsException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -71,7 +72,7 @@ data class ForecastResult(
     //this could probably be optimized
     private fun getHighsLows(daysAfter: Int): List<TempHighLow> {
         val list = ArrayList<TempHighLow>()
-        shortIntervals.map { it.startDate }.distinct().apply { forEach { Timber.d("list of days: $it") } }.subList(0, daysAfter)
+        shortIntervals.map { it.startDate }.distinct().subList(0, daysAfter)
             .forEach { list.add(TempHighLow(it, getLowForDay(it), getHighForDay(it))) }
         return list
     }
@@ -81,10 +82,22 @@ data class ForecastResult(
         return longIntervals.filter { it.timeInRange("12:00:00")}.map { it.symbol }.subList(0, daysAfter)
     }
 
-    fun getWeatherDaysAfter(daysAfter: Int): List<BasicWeather>{
+    fun getWeatherDaysAfter(): List<BasicWeather>{
+        var daysAfter = 4
+
         val results = ArrayList<BasicWeather>()
-        val listHighsLows: List<TempHighLow> = getHighsLows(daysAfter)
-        val listSymbols: List<Symbol> = getSymbolsMidDayAfter(daysAfter)
+        var listHighsLows: List<TempHighLow>
+        var listSymbols: List<Symbol>
+
+        try {
+            listHighsLows = getHighsLows(daysAfter)
+            listSymbols = getSymbolsMidDayAfter(daysAfter)
+        } catch (e: IndexOutOfBoundsException){
+            Timber.w(e,"Index was out of bounds, can only show 3 dates")
+            daysAfter = 3
+            listHighsLows = getHighsLows(daysAfter)
+            listSymbols = getSymbolsMidDayAfter(daysAfter)
+        }
 
         for (i in 0 until daysAfter){
             val date = listHighsLows[i].date
