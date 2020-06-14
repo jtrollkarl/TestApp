@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.testapp.App
 import com.example.testapp.R
 import com.example.testapp.ViewModelFactory
-import com.example.testapp.data.Location
+import com.example.testapp.data.forecast.ForecastResult
+import com.example.testapp.data.forecast.LongInterval
+import com.example.testapp.data.searchresult.Location
 import com.example.testapp.doTransaction
 import com.example.testapp.viewmodel.WeatherViewModel
 import javax.inject.Inject
@@ -26,12 +28,20 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProvider(this, vmFactory)[WeatherViewModel::class.java]
 
-        viewModel.liveDataSearchResult.observe(this, Observer { showResultsFragment(it) })
+        viewModel.liveDataSearchResult.observe(this, Observer {
+            showResultsFragment(it)
+        })
+        viewModel.liveDataForecast.observe(this, Observer { showForecastResults(it) })
     }
 
     private fun showWeatherFragmentIfStackEmpty() {
         supportFragmentManager.takeIf { it.fragments.isEmpty() }
-            ?.doTransaction { replace(R.id.container, FragmentWeather()) }
+            ?.doTransaction { replace(R.id.container, FragmentWeather(), FragmentWeather.TAG) }
+    }
+
+    private fun showForecastResults(result: ForecastResult){
+        supportFragmentManager.popBackStack()
+        //val fragmentWeather: FragmentWeather = supportFragmentManager.findFragmentByTag(FragmentWeather.TAG) as FragmentWeather
     }
 
     private fun showResultsFragment(list: List<Location>) {

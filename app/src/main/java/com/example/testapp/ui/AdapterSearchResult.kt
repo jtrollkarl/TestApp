@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapp.R
-import com.example.testapp.data.Location
-import kotlinx.android.synthetic.main.list_iteam_search_result.view.*
+import com.example.testapp.data.searchresult.Location
+import kotlinx.android.synthetic.main.list_item_search_result.view.*
 
 class AdapterSearchResult(
     var locationList: List<Location> = emptyList(),
@@ -15,7 +15,7 @@ class AdapterSearchResult(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderSearchResult =
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_iteam_search_result, parent, false).run {
+            .inflate(R.layout.list_item_search_result, parent, false).run {
                 ViewHolderSearchResult(this)
             }
 
@@ -25,7 +25,7 @@ class AdapterSearchResult(
 
     inner class ViewHolderSearchResult(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(location: Location) {
-            view.tv_city.text = location.name
+            view.tv_city_country.text = view.context.getString(R.string.comma_city_country, location.name, location.country.name)
             view.setOnClickListener { func(location) }
         }
     }
