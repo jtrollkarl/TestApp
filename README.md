@@ -16,3 +16,4 @@ I perhaps made the mistake of being overly ambitious as I decided to use corouti
 **Notes:**
 - The first screen is blank as I had intended to show the user's current location as soon as the app as started, atm it's empty with only the menu bar. 
 - Overall I maybe should have used the libraries I'm more familiar with as I would've saved some time. Had I had another day or two to work on this, I would've liked to attempt the other bonus tasks.
+- Some locations within shortIntervals only show weather for up to 3 days?
