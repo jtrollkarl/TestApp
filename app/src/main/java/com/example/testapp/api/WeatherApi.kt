@@ -15,10 +15,10 @@ interface WeatherApi {
         @Query("lon") longitude: Double? = null,
         @Query("accuracy") accuracy: Double? = null,
         @Query("language") language: String
-    ): SearchResult
+    ): SearchResult?
 
 
     @GET("locations/{Id}/forecast")
-    suspend fun getForecast(@Path("Id") id: String): ForecastResult
+    suspend fun getForecast(@Path("Id") id: String): ForecastResult?
 
 }
