@@ -12,7 +12,10 @@ import kotlin.reflect.KClass
 /*
 Basically the way this works is by taking advantage of multibindings with @IntoMap. We defined a custom Key earlier (ViewModelKey), which
 is any KClass that extends from ViewModel. We then label any ViewModel (in our ViewModelModule) binding with @ViewModelKey
-with the parameter being the class name (KClass).
+with the parameter being the class name (KClass). When the app builds (kapt), all the ViewModels are added to a map. Each corresponding
+to a class key which we define on the binding with @ViewModelKey. Dagger knows which dependencies to grab as we mark the ViewModels constructor with
+@Inject. We also type the ViewModel Key as a Provider, so a new instance is created only when get is called. Not marking it as Provider would have it already
+be instantiated.
  */
 @Singleton
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
